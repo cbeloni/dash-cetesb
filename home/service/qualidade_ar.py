@@ -1,3 +1,4 @@
+import requests
 class QualidadeAr:
     def __init__(self, nome, situacao_rede, tipo_rede, data, qualidade):
         self.nome = nome
@@ -7,36 +8,25 @@ class QualidadeAr:
         self.qualidade = qualidade
 
 def listar_todos():
-    qualidade_santo_andre = QualidadeAr(nome="Santo André",
-                                        situacao_rede="A",
-                                        tipo_rede="A",
-                                        data="2023-03-11 10:00:00.000",
-                                        qualidade="N1 - BOA")
-    qualidade_capao = QualidadeAr(nome="Capão Redondo",
-                                  situacao_rede="A",
-                                  tipo_rede="A",
-                                  data="2023-03-11 10:00:00.000",
-                                  qualidade="N1 - BOA")
-    qualidade_carapicuiba = QualidadeAr(nome="Carapicuíba",
-                                        situacao_rede="A",
-                                        tipo_rede="A",
-                                        data="2023-03-11 10:00:00.000",
-                                        qualidade="N1 - BOA")
-    qualidade_ibirapuera = QualidadeAr(nome="Ibirapuera",
-                                       situacao_rede="A",
-                                       tipo_rede="A",
-                                       data="2023-03-11 12:00:00.000",
-                                       qualidade="Não coletado")
-    qualidade_ibirapuera2 = QualidadeAr(nome="Ibirapuera",
-                                       situacao_rede="A",
-                                       tipo_rede="A",
-                                       data="2023-03-11 12:00:00.000",
-                                       qualidade="Não coletado")
+    lista_qualidade_ar2 = _get_cetesb_()
+    return lista_qualidade_ar2
 
+def _get_cetesb_():
+    url = "https://arcgis.cetesb.sp.gov.br/server/rest/services/QUALAR/CETESB_QUALAR/MapServer/6/query?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={%22xmin%22:-5244191.63658331,%22ymin%22:-2739503.0937498696,%22xmax%22:-5165920.11961926,%22ymax%22:-2661231.5767858177,%22spatialReference%22:{%22wkid%22:102100}}&geometryType=esriGeometryEnvelope&inSR=102100&outFields=*&outSR=102100"
+
+    response = requests.get(url)
+    url = "https://arcgis.cetesb.sp.gov.br/server/rest/services/QUALAR/CETESB_QUALAR/MapServer/6/query?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={%22xmin%22:-5244191.63658331,%22ymin%22:-2739503.0937498696,%22xmax%22:-5165920.11961926,%22ymax%22:-2661231.5767858177,%22spatialReference%22:{%22wkid%22:102100}}&geometryType=esriGeometryEnvelope&inSR=102100&outFields=*&outSR=102100"
+
+    response = requests.get(url)
+    data = response.json()
     lista_qualidade_ar = []
-    lista_qualidade_ar.append(qualidade_santo_andre)
-    lista_qualidade_ar.append(qualidade_capao)
-    lista_qualidade_ar.append(qualidade_carapicuiba)
-    lista_qualidade_ar.append(qualidade_ibirapuera)
-    lista_qualidade_ar.append(qualidade_ibirapuera2)
+    for feature in data['features']:
+        nome = feature['attributes']['Nome']
+        data = feature['attributes']['DATA']
+        situacao_rede = feature['attributes']['Situacao_Rede']
+        qualidade = feature['attributes']['Qualidade'] or 'Não coletado'
+        tipo_rede = feature['attributes']['Tipo_Rede']
+        lista_qualidade_ar.append(QualidadeAr(nome=nome, situacao_rede=situacao_rede, tipo_rede=tipo_rede, data=data, qualidade=qualidade))
+
+
     return lista_qualidade_ar
