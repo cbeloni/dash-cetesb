@@ -27,10 +27,16 @@ def listar_todos():
                                        tipo_rede="A",
                                        data="2023-03-11 12:00:00.000",
                                        qualidade="Não coletado")
+    qualidade_ibirapuera2 = QualidadeAr(nome="Ibirapuera",
+                                       situacao_rede="A",
+                                       tipo_rede="A",
+                                       data="2023-03-11 12:00:00.000",
+                                       qualidade="Não coletado")
 
     lista_qualidade_ar = []
     lista_qualidade_ar.append(qualidade_santo_andre)
     lista_qualidade_ar.append(qualidade_capao)
     lista_qualidade_ar.append(qualidade_carapicuiba)
     lista_qualidade_ar.append(qualidade_ibirapuera)
+    lista_qualidade_ar.append(qualidade_ibirapuera2)
     return lista_qualidade_ar
