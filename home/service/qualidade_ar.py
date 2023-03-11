@@ -1,4 +1,5 @@
 import requests
+
 class QualidadeAr:
     def __init__(self, nome, situacao_rede, tipo_rede, data, qualidade):
         self.nome = nome
@@ -22,7 +23,7 @@ def _get_cetesb_():
     lista_qualidade_ar = []
     for feature in data['features']:
         nome = feature['attributes']['Nome']
-        data = feature['attributes']['DATA']
+        data = feature['attributes']['DATA'][:16]
         situacao_rede = feature['attributes']['Situacao_Rede']
         qualidade = feature['attributes']['Qualidade'] or 'Não coletado'
         tipo_rede = feature['attributes']['Tipo_Rede']
