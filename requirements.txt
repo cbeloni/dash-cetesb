@@ -4,6 +4,7 @@ python-dotenv
 whitenoise
 django-admin-soft-dashboard==1.0.7
 requests
+cachetools
 
 # psycopg2-binary
 # mysqlclient

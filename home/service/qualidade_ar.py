@@ -1,4 +1,5 @@
 import requests
+from cachetools import cached, LRUCache, TTLCache
 
 class QualidadeAr:
     def __init__(self, nome, situacao_rede, tipo_rede, data, qualidade):
@@ -11,7 +12,7 @@ class QualidadeAr:
 def listar_todos():
     lista_qualidade_ar2 = _get_cetesb_()
     return lista_qualidade_ar2
-
+@cached(cache=TTLCache(maxsize=1024, ttl=3600))
 def _get_cetesb_():
     url = "https://arcgis.cetesb.sp.gov.br/server/rest/services/QUALAR/CETESB_QUALAR/MapServer/6/query?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry={%22xmin%22:-5244191.63658331,%22ymin%22:-2739503.0937498696,%22xmax%22:-5165920.11961926,%22ymax%22:-2661231.5767858177,%22spatialReference%22:{%22wkid%22:102100}}&geometryType=esriGeometryEnvelope&inSR=102100&outFields=*&outSR=102100"
 
