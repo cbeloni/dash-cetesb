@@ -6,15 +6,16 @@
     <div class="container-fluid py-4">
 
       <div class="row">
-        <h6>Qualidade do ar agora<agora></agora></h6>
+        <h6>Qualidade do ar agora</h6>
         {% for ar in lista_qualidade_ar %}
           <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
           <div class="card">
             <div class="card-body p-3">
-              <div class="row">
-                <div class="col-8">
+              <div class="row clickable" onclick="minhaFuncao('{{ ar.nome }}')">
+                <div class="col-8 ">
                   <div>
-                    <p class="text-mb mb-2 text-capitalize font-weight-bold">{{ ar.nome }}</p>
+                    <a class="text-mb mb-2 text-capitalize font-weight-bold"> {{ ar.nome }} </a>
+
                     <h6 class="font-weight-bolder mb-0">
                       {% if ar.qualidade == 'N1 - BOA' %}
                           <span class="text-success text-sm font-weight-bolder">Qualidade do ar: {{ar.qualidade}}</span>
@@ -75,59 +76,70 @@
 
   <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
   <script>
+    var filtro_dataset = []
 
-   const ctx = document.getElementById('chart-bars');
-   console.log('carregando gráfico');
-    var datasets = []
-    {% for detalhe_geral in detalhes %}
-    var nome = ''
-    var labels = []
-    var lista_indices = []
-      {% for d in detalhe_geral %}
-        console.log('d', '{{d.nome}}');
-        console.log('d', '{{d.indice}}');
-        console.log('d', '{{d.data}}');
-        nome = '{{d.nome}}'
-        lista_indices.push('{{d.indice}}')
-        labels.push('{{d.data}}')
+    function minhaFuncao(municipio) {
+        console.log("O valor do parâmetro é: " + municipio);
+        filtro_dataset.push(municipio);
+        let datasetsFiltrado = datasets.filter(dataset => filtro_dataset.includes(dataset.label));
+        chart.data.datasets = datasetsFiltrado;
+        chart.update();
+    }
+
+      const ctx = document.getElementById('chart-bars');
+      var datasets = []
+      {% for detalhe_geral in detalhes %}
+      var nome = ''
+      var labels = []
+      var lista_indices = []
+        {% for d in detalhe_geral %}
+          nome = '{{d.nome}}'
+          lista_indices.push('{{d.indice}}')
+          labels.push('{{d.data}}')
+        {% endfor %}
+        var random = Math.floor(Math.random() * 256);
+        var random2 = Math.floor(Math.random() * 256);
+        var random3 = Math.floor(Math.random() * 256);
+        var customDataset = { label: nome,
+                        data: lista_indices,
+                        fill: false,
+                        borderColor: 'rgb(' + random + ',' + random2 +', ' + random3  +')',
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4  }
+        datasets.push(customDataset)
       {% endfor %}
-      console.log('random start');
-      var random = Math.floor(Math.random() * 256);
-      var random2 = Math.floor(Math.random() * 256);
-      var random3 = Math.floor(Math.random() * 256);
-      var customDataset = { label: nome,
-                      data: lista_indices,
-                      fill: false,
-                      borderColor: 'rgb(' + random + ',' + random2 +', ' + random3  +')',
-                      cubicInterpolationMode: 'monotone',
-                      tension: 0.4  }
-      datasets.push(customDataset)
-    {% endfor %}
 
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-            labels: labels,
-            datasets: datasets
-          },
-      interaction: {
-        intersect: false,
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-                title: {
-                display: true,
-                text: 'Índice Poluição'
-                },
-          suggestedMin: 0,
-          suggestedMax: 5,
-          beginAtZero: true
+      console.log('datasets',datasets);
+
+      let municipiosFiltro = ['Santo Amaro', 'Grajaú-Parelheiros'];
+      let datasetsFiltrado = datasets.filter(dataset => municipiosFiltro.includes(dataset.label));
+
+      var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+              labels: labels,
+              datasets: datasetsFiltrado
+            },
+        interaction: {
+          intersect: false,
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+                  title: {
+                  display: true,
+                  text: 'Índice Poluição'
+                  },
+            suggestedMin: 0,
+            suggestedMax: 5,
+            beginAtZero: true
+            }
           }
         }
-      }
-    });
+      });
+
+
   </script>
 
 {% endblock scripts %}
