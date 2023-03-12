@@ -60,7 +60,7 @@ def _atribute_detalhes(data, nome):
     lista_detalhes = []
     keys = list(data.keys())
     count = 24 if len(keys) > 24 else len(keys)
-    for i in range(0, count, 2):
+    for i in range(count, 0, -2):
         valueIndice = data[keys[i]]
         valueData = datetime.fromtimestamp(data[keys[i + 1]] / 1000).strftime("%Y-%m-%d %Hh")
         lista_detalhes.append(Detalhes(indice=valueIndice, data=valueData, nome=nome))
