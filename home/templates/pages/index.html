@@ -95,16 +95,14 @@
       var random = Math.floor(Math.random() * 256);
       var random2 = Math.floor(Math.random() * 256);
       var random3 = Math.floor(Math.random() * 256);
-      console.log('random', random);
       var customDataset = { label: nome,
                       data: lista_indices,
                       fill: false,
                       borderColor: 'rgb(' + random + ',' + random2 +', ' + random3  +')',
-                      tension: 0.1  }
+                      cubicInterpolationMode: 'monotone',
+                      tension: 0.4  }
       datasets.push(customDataset)
     {% endfor %}
-    console.log('plotando gráfico labels: ', labels);
-    console.log('plotando gráfico datasets: ', datasets);
 
     new Chart(ctx, {
       type: 'line',
@@ -112,10 +110,20 @@
             labels: labels,
             datasets: datasets
           },
+      interaction: {
+        intersect: false,
+      },
       options: {
+        responsive: true,
         scales: {
           y: {
-            beginAtZero: true
+                title: {
+                display: true,
+                text: 'Índice Poluição'
+                },
+          suggestedMin: 0,
+          suggestedMax: 5,
+          beginAtZero: true
           }
         }
       }
