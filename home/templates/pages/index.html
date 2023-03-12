@@ -46,15 +46,14 @@
         </div>
         {% endfor %}
       </div>
-      {% if nome_detalhes %}
       <div class="row mt-1">
         <div class="col-lg-12 mb-lg-0 mb-4">
           <div class="card z-index-2">
             <div class="card-body p-3">
               <h6>
-                Detalhes - {{nome_detalhes}}
+                Detalhes
               </h6>
-              <div class="bg-gradient-light border-radius-lg py-3 pe-1 mb-3">
+              <div class="border-radius-lg py-3 pe-1 mb-3">
                 <div class="chart">
                   <canvas id="chart-bars" class="chart-canvas" height="100"></canvas>
                 </div>
@@ -63,7 +62,6 @@
             </div>
           </div>
         </div>
-        {% endif %}
       </div>
 
       {% include "includes/footer.html" %}
@@ -79,26 +77,40 @@
   <script>
 
    const ctx = document.getElementById('chart-bars');
-   var lista_indices = []
-   var lista_datas = []
-    {% for detalhe in detalhes %}
-      var indice = {{detalhe.indice}}
-      var data = '{{detalhe.data}}'
-      lista_indices.push(indice);
-      lista_datas.push(data);
+   console.log('carregando gráfico');
+    var datasets = []
+    {% for detalhe_geral in detalhes %}
+    var nome = ''
+    var labels = []
+    var lista_indices = []
+      {% for d in detalhe_geral %}
+        console.log('d', '{{d.nome}}');
+        console.log('d', '{{d.indice}}');
+        console.log('d', '{{d.data}}');
+        nome = '{{d.nome}}'
+        lista_indices.push('{{d.indice}}')
+        labels.push('{{d.data}}')
+      {% endfor %}
+      console.log('random start');
+      var random = Math.floor(Math.random() * 256);
+      var random2 = Math.floor(Math.random() * 256);
+      var random3 = Math.floor(Math.random() * 256);
+      console.log('random', random);
+      var customDataset = { label: nome,
+                      data: lista_indices,
+                      fill: false,
+                      borderColor: 'rgb(' + random + ',' + random2 +', ' + random3  +')',
+                      tension: 0.1  }
+      datasets.push(customDataset)
     {% endfor %}
+    console.log('plotando gráfico labels: ', labels);
+    console.log('plotando gráfico datasets: ', datasets);
 
     new Chart(ctx, {
       type: 'line',
       data: {
-            labels: lista_datas,
-            datasets: [{
-              label: '{{nome_detalhes}}',
-              data: lista_indices,
-              fill: false,
-              borderColor: 'rgb(75, 192, 192)',
-              tension: 0.1
-            }]
+            labels: labels,
+            datasets: datasets
           },
       options: {
         scales: {
