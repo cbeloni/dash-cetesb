@@ -29,7 +29,7 @@ if not SECRET_KEY:
 
 # Render Deployment Code
 # DEBUG = 'RENDER' not in os.environ
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['dash-cetesb.onrender.com', 'localhost']
 
@@ -150,7 +150,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # if not DEBUG:
 #     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
