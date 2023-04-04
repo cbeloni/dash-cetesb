@@ -31,7 +31,7 @@ if not SECRET_KEY:
 # DEBUG = 'RENDER' not in os.environ
 DEBUG = False
 
-ALLOWED_HOSTS = ['dash-cetesb.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 # RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 # print ('RENDER_EXTERNAL_HOSTNAME: ' + str(RENDER_EXTERNAL_HOSTNAME))
