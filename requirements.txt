@@ -8,8 +8,6 @@ cachetools
 pandas
 numpy
 plotly
-numba
-pycuda
 
 # psycopg2-binary
 # mysqlclient
