@@ -5,6 +5,11 @@ whitenoise
 django-admin-soft-dashboard==1.0.7
 requests
 cachetools
+pandas
+numpy
+plotly
+numba
+pycuda
 
 # psycopg2-binary
 # mysqlclient

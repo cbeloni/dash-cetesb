@@ -4,17 +4,14 @@
 {% block content %}
 
     <div class="container-fluid py-4">
-
-      <div class="row">
-        <h6>Qualidade do ar agora</h6>
-        <!-- <div id='myDiv'> Plotly chart will be drawn inside this DIV -->
-        <div>
-          {% include "pages/eua.html" %}
+      <div id="graf" style="height: 100%">
+          {% include "pages/sp.html" %}
         </div>
         <span>
           <br>
         </span>
-
+      <div class="row">
+        <h6>Qualidade do ar agora</h6>
         {% for ar in lista_qualidade_ar %}
           <div class="col-xl-3 col-sm-6 mb-xl-2 mb-4">
           <div class="card clickable" onclick="clickEventCard('{{ ar.nome }}')">
@@ -100,7 +97,6 @@
           </tbody>
         </table>
       </div>
-
       {% include "includes/footer.html" %}
 
     </div>
